@@ -1,1 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDAA - Advanced Desktop AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a8a 0%, #000000 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #1e40af;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #1e3a8a 0%, #000000 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #1e40af 0%, #1f2937 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(30, 64, 175, 0.6);
+            background: linear-gradient(135deg, #2563eb 0%, #374151 100%);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* System Requirements */
+        .requirements {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .req-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .req-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Installation Guide */
+        .installation {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .install-steps {
+            margin-top: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #1e40af 0%, #1f2937 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1e3a8a 0%, #000000 100%);
+            color: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular {
+            border-color: #1e40af;
+            transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .testimonial {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 4rem;
+            color: #1e40af;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+        }
+
+        .author {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #1e40af 0%, #1f2937 100%);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #374151 100%);
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        /* About */
+        .about {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #1e40af;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #1e40af;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #555;
+            color: #ccc;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #000000 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .download-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+
+        .download-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .version-info {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">AIDAA</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>AIDAA</h1>
+            <p>Advanced Intelligence Desktop AI Assistant - Your Personal AI Companion</p>
+            <a href="#download" class="cta-button">Download Now</a>
+        </div>
+    </section>
+
+    <section id="download" class="download-section">
+        <div class="container">
+            <h2>Download AIDAA</h2>
+            <p>Get started with your personal AI assistant today</p>
+            
+            <div class="version-info">
+                <h3>Latest Version: AIDAA v2.1.0</h3>
+                <p>Release Date: August 10, 2025 | Size: 95 MB</p>
+                <p>Compatible with Windows 10/11, macOS 12+, Ubuntu 20.04+</p>
+            </div>
+            
+            <a href="#" class="download-button" onclick="downloadFile('windows')">
+                <svg style="display: inline-block; width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 12V6.75l6-1.32v6.48L3 12zm6-1.32l9-1.98v7.5l-9-1.98V10.68zM3 12l6 1.32v6.48L3 17.25V12zm15-1.32l3-.66v4.96l-3-.66V10.68z"/>
+                </svg>
+                Download for Windows
+            </a>
+            <a href="#" class="download-button" onclick="downloadFile('mac')">
+                <svg style="display: inline-block; width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                Download for macOS
+            </a>
+            <a href="#" class="download-button" onclick="downloadFile('linux')">
+                <svg style="display: inline-block; width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.504 0C5.951 0 .5 5.45.5 12.004c0 6.553 5.45 12.003 12.004 12.003 6.553 0 12.003-5.45 12.003-12.003C24.507 5.45 19.057.001 12.504 0zM12 2.25c5.384 0 9.75 4.366 9.75 9.75S17.384 21.75 12 21.75 2.25 17.384 2.25 12 6.616 2.25 12 2.25z"/>
+                    <circle cx="12" cy="12" r="8"/>
+                </svg>
+                Download for Linux
+            </a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose AIDAA?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"/>
+                            <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1"/>
+                            <path d="M3 12v6c0 .552.448 1 1 1h16c.552 0 1-.448 1-1v-6"/>
+                            <circle cx="12" cy="8" r="3"/>
+                        </svg>
+                    </div>
+                    <h3>Advanced AI Intelligence</h3>
+                    <p>Powered by cutting-edge machine learning algorithms for natural conversations and intelligent responses.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>Privacy First</h3>
+                    <p>All data processing happens locally on your device. Your conversations never leave your computer.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                        </svg>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Optimized for performance with instant responses and minimal resource usage.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-6.5L19 7l-1.5 1.5M5 7l1.5 1.5L5 10m0 7l1.5-1.5L5 14m14 3l-1.5-1.5L19 14"/>
+                        </svg>
+                    </div>
+                    <h3>Task Automation</h3>
+                    <p>Automate repetitive tasks, schedule reminders, and manage your daily workflow efficiently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Natural Conversations</h3>
+                    <p>Engage in human-like conversations with context awareness and emotional intelligence.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                    </div>
+                    <h3>Highly Customizable</h3>
+                    <p>Personalize AIDAA to match your preferences, workflow, and specific needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="requirements">
+        <div class="container">
+            <h2 class="section-title">System Requirements</h2>
+            <div class="req-grid">
+                <div class="req-card">
+                    <h3>
+                        <svg style="display: inline-block; width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        Windows
+                    </h3>
+                    <ul>
+                        <li>Windows 10 (64-bit) or newer</li>
+                        <li>4GB RAM (8GB recommended)</li>
+                        <li>2GB available disk space</li>
+                        <li>Internet connection for setup</li>
+                        <li>DirectX 11 compatible graphics</li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <h3>
+                        <svg style="display: inline-block; width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        macOS
+                    </h3>
+                    <ul>
+                        <li>macOS 12.0 or later</li>
+                        <li>4GB RAM (8GB recommended)</li>
+                        <li>2GB available disk space</li>
+                        <li>Internet connection for setup</li>
+                        <li>Intel or Apple Silicon processor</li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <h3>
+                        <svg style="display: inline-block; width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                        Linux
+                    </h3>
+                    <ul>
+                        <li>Ubuntu 20.04+ or equivalent</li>
+                        <li>4GB RAM (8GB recommended)</li>
+                        <li>2GB available disk space</li>
+                        <li>Internet connection for setup</li>
+                        <li>X11 or Wayland display server</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="installation">
+        <div class="container">
+            <h2 class="section-title">Installation Guide</h2>
+            <div class="install-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Download AIDAA</h3>
+                        <p>Click the download button above to get the latest version of AIDAA for your operating system. The download will start automatically.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Run the Installer</h3>
+                        <p><strong>Windows:</strong> Double-click AIDAA-Setup.exe and follow the installation wizard.<br>
+                        <strong>macOS:</strong> Open the .dmg file and drag AIDAA to Applications.<br>
+                        <strong>Linux:</strong> Run sudo dpkg -i aidaa.deb or sudo rpm -i aidaa.rpm</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Launch AIDAA</h3>
+                        <p>Find AIDAA in your applications menu or desktop and click to launch. The first startup may take a few moments to initialize.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3>Complete Setup</h3>
+                        <p>Follow the welcome wizard to configure your preferences, set up voice commands, and customize AIDAA's appearance and behavior.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div>
+                        <h3>Start Using AIDAA</h3>
+                        <p>You're all set! Start chatting with AIDAA, explore the features, and begin automating your daily tasks with your new AI assistant.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Choose Your Plan</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <div class="price">Free</div>
+                    <ul>
+                        <li>✅ Basic AI conversations</li>
+                        <li>✅ Task reminders</li>
+                        <li>✅ Local data processing</li>
+                        <li>✅ Email support</li>
+                        <li>❌ Advanced automation</li>
+                        <li>❌ Voice commands</li>
+                    </ul>
+                    <a href="#" class="cta-button">Get Started</a>
+                </div>
+                <div class="pricing-card popular">
+                    <h3>Pro</h3>
+                    <div class="price">$9.99<small>/month</small></div>
+                    <ul>
+                        <li>✅ Everything in Basic</li>
+                        <li>✅ Advanced AI features</li>
+                        <li>✅ Voice commands</li>
+                        <li>✅ Task automation</li>
+                        <li>✅ Priority support</li>
+                        <li>✅ Custom integrations</li>
+                    </ul>
+                    <a href="#" class="cta-button">Start Free Trial</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">$29.99<small>/month</small></div>
+                    <ul>
+                        <li>✅ Everything in Pro</li>
+                        <li>✅ Team collaboration</li>
+                        <li>✅ Advanced analytics</li>
+                        <li>✅ API access</li>
+                        <li>✅ 24/7 phone support</li>
+                        <li>✅ Custom deployment</li>
+                    </ul>
+                    <a href="#" class="cta-button">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Users Are Saying</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <p>AIDAA has completely transformed how I manage my daily tasks. The AI is incredibly intuitive and feels like having a personal assistant that actually understands what I need.</p>
+                    <div class="author">- Sarah Johnson, Marketing Manager</div>
+                </div>
+                <div class="testimonial">
+                    <p>As a developer, I love that AIDAA runs entirely locally. No privacy concerns, lightning-fast responses, and it integrates seamlessly with my development workflow.</p>
+                    <div class="author">- Michael Chen, Software Engineer</div>
+                </div>
+                <div class="testimonial">
+                    <p>The automation features are game-changing. AIDAA handles my email scheduling, calendar management, and even helps with creative writing. It's like having superpowers!</p>
+                    <div class="author">- Emma Rodriguez, Content Creator</div>
+                </div>
+                <div class="testimonial">
+                    <p>I've tried many AI assistants, but AIDAA stands out for its natural conversations and ability to remember context. It truly feels like talking to an intelligent companion.</p>
+                    <div class="author">- Dr. James Wilson, Researcher</div>
+                </div>
+                <div class="testimonial">
+                    <p>The voice commands work flawlessly, and the customization options are endless. AIDAA adapts to my workflow rather than forcing me to adapt to it.</p>
+                    <div class="author">- Lisa Park, Business Owner</div>
+                </div>
+                <div class="testimonial">
+                    <p>Incredible value for money. The free version alone offers more features than most paid alternatives. AIDAA is a must-have for anyone looking to boost productivity.</p>
+                    <div class="author">- David Thompson, Student</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Is AIDAA completely free to use?
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! AIDAA offers a robust free version with core AI functionality, task reminders, and local data processing. You can upgrade to Pro or Enterprise for advanced features like voice commands, automation, and priority support.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How is my privacy protected?
+                </div>
+                <div class="faq-answer">
+                    <p>Privacy is our top priority. AIDAA processes all data locally on your device - your conversations, files, and personal information never leave your computer. We don't collect, store, or transmit any user data to external servers.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What languages does AIDAA support?
+                </div>
+                <div class="faq-answer">
+                    <p>AIDAA currently supports English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese (Simplified), Japanese, and Korean. We're continuously adding support for more languages based on user demand.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can I use AIDAA offline?
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! Once installed, AIDAA works completely offline. You only need an internet connection for the initial setup and occasional updates. All AI processing happens locally on your device.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How often is AIDAA updated?
+                </div>
+                <div class="faq-answer">
+                    <p>We release updates monthly with new features, improvements, and bug fixes. Major updates with significant new capabilities are released quarterly. All updates are free for existing users.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can I integrate AIDAA with other applications?
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! AIDAA Pro and Enterprise plans include integration capabilities with popular applications like Microsoft Office, Google Workspace, Slack, Trello, and many more. The Enterprise plan also provides API access for custom integrations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About AIDAA</h2>
+            <div class="about-content">
+                <div>
+                    <h3>Our Mission</h3>
+                    <p>At AIDAA, we believe that artificial intelligence should enhance human potential, not replace it. Our mission is to create the most intuitive, privacy-focused, and powerful desktop AI assistant that empowers individuals and teams to achieve more.</p>
+                    
+                    <h3>Our Story</h3>
+                    <p>Founded in 2023 by a team of AI researchers and privacy advocates, AIDAA was born from the frustration with cloud-based AI assistants that compromise user privacy. We set out to build something different - an AI that's truly yours.</p>
+                    
+                    <h3>Our Values</h3>
+                    <ul>
+                        <li><strong>Privacy First:</strong> Your data belongs to you, not us</li>
+                        <li><strong>Innovation:</strong> Pushing the boundaries of desktop AI</li>
+                        <li><strong>Accessibility:</strong> AI for everyone, regardless of technical expertise</li>
+                        <li><strong>Transparency:</strong> Open about our methods and limitations</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>The Technology Behind AIDAA</h3>
+                    <p>AIDAA is built on advanced machine learning models optimized for local processing. Our proprietary compression algorithms ensure that enterprise-grade AI capabilities run smoothly on consumer hardware without compromising performance or accuracy.</p>
+                    
+                    <h3>Our Team</h3>
+                    <p>Our diverse team of 50+ engineers, researchers, and designers comes from leading tech companies and universities worldwide. We're united by our passion for creating AI that truly serves humanity's best interests.</p>
+                    
+                    <h3>Awards & Recognition</h3>
+                    <ul>
+                        <li>🏆 Best AI Innovation 2024 - Tech Excellence Awards</li>
+                        <li>🏆 Privacy Champion 2024 - Digital Rights Foundation</li>
+                        <li>🏆 Editor's Choice - AI Software Review 2024</li>
+                        <li>🏆 Top 10 AI Startups - VentureBeat 2024</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AIDAA</h3>
+                    <p>Advanced Intelligence Desktop AI Assistant - Your Personal AI Companion</p>
+                    <p>Making AI accessible, private, and powerful for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#download">Download</a>
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#about">About Us</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="#">Documentation</a>
+                    <a href="#">User Guide</a>
+                    <a href="#">Video Tutorials</a>
+                    <a href="#">Community Forum</a>
+                    <a href="#">Contact Support</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <a href="#">Careers</a>
+                    <a href="#">Press Kit</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">GitHub</a>
+                    <a href="#">YouTube</a>
+                    <a href="#">Discord</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AIDAA Technologies Inc. All rights reserved.</p>
+                <p>Contact us: hello@aidaa.ai | +1 (555) AIDAA-AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Download Function
+        function downloadFile(platform) {
+            // Simulate download - replace with actual download URLs
+            const downloads = {
+                'windows': 'https://releases.aidaa.ai/latest/AIDAA-Setup-Windows.exe',
+                'mac': 'https://releases.aidaa.ai/latest/AIDAA-Setup-macOS.dmg',
+                'linux': 'https://releases.aidaa.ai/latest/AIDAA-Setup-Linux.deb'
+            };
+            
+            alert(`Starting download for ${platform.charAt(0).toUpperCase() + platform.slice(1)}...\n\nDownload URL: ${downloads[platform]}\n\nNote: This is a demo. Replace with actual download links.`);
+            
+            // In a real implementation, you would trigger the actual download here
+            // window.location.href = downloads[platform];
+        }
+
+        // Smooth scrolling for navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Mobile menu toggle (basic implementation)
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('mobile-active');
+        }
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Animate elements on scroll (simple implementation)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe elements for animation
+            const animateElements = document.querySelectorAll('.feature-card, .req-card, .pricing-card, .testimonial');
+            animateElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
